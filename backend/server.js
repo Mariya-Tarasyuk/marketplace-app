@@ -1,3 +1,6 @@
+require('dotenv').config();
+const express = require('express');
+const { Pool } = require('pg');
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -46,8 +49,7 @@ const pool = new Pool({
   // database: 'marketplace_DB',
   // password: 'Tarasyuk1', 
   // port: 5432,
-  connectionString: 'postgresql://neondb_owner:npg_U9Lo6pBAbYKs@ep-calm-term-aqzxv8em.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require',
-  // Обов'язковий параметр безпеки для роботи з віддаленими хмарними серверами
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }

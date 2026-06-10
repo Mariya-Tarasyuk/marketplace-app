@@ -40,6 +40,7 @@ testem.log
 __screenshots__/
 
 node_modules/
+.env
 # System files
 .DS_Store
 Thumbs.db
