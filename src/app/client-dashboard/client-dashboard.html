@@ -1,0 +1,144 @@
+<div class="dark-universe">
+  <nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 2rem;">
+      <h2 class="gradient-text logo">NEON 3D</h2>
+      
+      <a routerLink="/client-dashboard" style="color: white; font-weight: bold; text-decoration: none;">Client Dashboard</a>
+      <a routerLink="/marketplace" style="color: #9ca3af; text-decoration: none; cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#9ca3af'">Marketplace</a>
+      <a routerLink="/artists" style="color: #9ca3af; text-decoration: none; cursor: pointer; transition: color 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#9ca3af'">Artists</a>
+    </div>
+
+    <button class="outline-btn" routerLink="/">Log Out</button>
+  </nav>
+
+  <div class="admin-container">
+    
+    <div *ngIf="!isDataLoaded && !isLoading" class="empty-state">
+      <h1 class="page-title" style="text-align: center; margin-top: 5rem;">No Data Detected 🛰️</h1>
+      <p style="text-align: center; color: #9ca3af; margin-bottom: 2rem;">The database is currently empty. Please upload the CSV files from the Login page first.</p>
+      <div style="display: flex; justify-content: center;">
+        <button class="glow-btn" routerLink="/">Go to Login / Import</button>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" style="text-align: center; margin-top: 5rem; color: #a78bfa;">
+      <h2>Loading Client Profile... ⏳</h2>
+    </div>
+
+    <div *ngIf="isDataLoaded && !isLoading && client">
+      
+      <div class="profile-header">
+        <div class="author-info">
+          <h1 class="page-title">Welcome back, <span class="gradient-text">{{ client.login }}</span></h1>
+          <p class="subtitle">{{ client.email }}</p>
+        </div>
+        
+        <div class="finance-card">
+          <div class="balance-info">
+            <h3>Current Balance</h3>
+            <div class="value text-green font-extrabold">${{ client.balance_usd | number:'1.2-2' }}</div>
+          </div>
+          
+          <div class="withdraw-section">
+            <input type="number" [(ngModel)]="topUpAmount" class="neon-input small-input" placeholder="Amount to add...">
+            <button class="glow-btn withdraw-btn" (click)="processTopUp()" [disabled]="topUpAmount <= 0">Add Funds</button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="neon-divider">
+
+      <div class="author-tabs">
+        <button [class.active-tab]="activeTab === 'purchases'" (click)="setTab('purchases')">📦 My Collection</button>
+        <button [class.active-tab]="activeTab === 'reviews'" (click)="setTab('reviews')">⭐ My Reviews</button>
+        <button [class.active-tab]="activeTab === 'orders'" (click)="setTab('orders')">📋 My Orders</button>
+      </div>
+
+      <div *ngIf="activeTab === 'orders'" class="table-container" style="margin-top: 1.5rem;">
+        <table class="neon-table">
+          <thead>
+            <tr><th>Order #</th><th>Status</th><th>Budget</th><th>Result / Preview</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders">
+              <td class="font-bold" style="color: #a78bfa;">{{ order.order_number }}</td>
+              <td>
+                <span [style.color]="order.status === 'Pending' ? '#f59e0b' : '#10b981'">
+                  ● {{ order.status }}
+                </span>
+              </td>
+              <td class="text-green font-bold">${{ order.total_price_usd }}</td>
+              <td>
+                <div *ngIf="order.status === 'Completed' && order.file_url">
+  
+                  
+                  <button class="action-btn edit-btn" style="margin-top: 0.5rem; width: 100%;" (click)="downloadAsset(order.file_url, order.order_number)">
+                    ⬇️ Download File
+                  </button>
+                </div>
+                <span *ngIf="order.status !== 'Completed'" style="color: #9ca3af; font-style: italic;">Awaiting delivery...</span>
+              </td>
+            </tr>
+            <tr *ngIf="orders.length === 0">
+              <td colspan="4" style="text-align: center; padding: 2rem; color: #9ca3af;">You haven't placed any custom orders yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="activeTab === 'purchases'">
+        <div class="header-actions" style="margin-top: 1.5rem;">
+          <h2>My 3D Assets ({{ purchases.length }})</h2>
+        </div>
+
+        <div class="assets-grid">
+          <div class="asset-card" *ngFor="let item of purchases">
+            <div class="asset-image-placeholder">
+              <span>🖼️ {{ item.category_id === 1 ? 'Character' : 'Environment' }}</span>
+            </div>
+            <div class="asset-details">
+              <h3>{{ item.title }}</h3>
+              <div class="asset-meta">
+                <span style="color: #a78bfa;">by @{{ item.author_name }}</span>
+                <span>🗓️ {{ item.transaction_date | date:'shortDate' }}</span> 
+              </div>
+              
+              <div class="card-actions" style="flex-direction: column; gap: 0.5rem;">
+                <button class="action-btn edit-btn" style="width: 100%;" (click)="downloadAsset(item.file_url, item.title)">
+                  ⬇️ Download Asset
+                </button>
+                <button class="action-btn outline-btn" style="width: 100%; border-color: #f59e0b; color: #f59e0b;" (click)="leaveReview(item.id, item.title)">
+                  ⭐ Leave Review
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="purchases.length === 0" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #9ca3af;">
+            You haven't purchased any models yet. Visit the <a routerLink="/marketplace" style="color: #a78bfa;">Marketplace</a>!
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'reviews'" class="table-container" style="margin-top: 1.5rem;">
+        <table class="neon-table">
+          <thead>
+            <tr><th>Review ID</th><th>Model</th><th>Rating</th><th>Comment</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let review of reviews">
+              <td>#{{ review.id }}</td>
+              <td class="font-bold">{{ review.asset }}</td>
+              <td class="text-green">⭐ {{ review.rating }}/5</td>
+              <td>{{ review.comment }}</td>
+            </tr>
+            <tr *ngIf="reviews.length === 0">
+              <td colspan="4" style="text-align: center; padding: 2rem; color: #9ca3af;">You haven't left any reviews yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

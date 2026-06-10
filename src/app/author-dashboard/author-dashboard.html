@@ -1,0 +1,239 @@
+<div class="dark-universe">
+  <nav class="top-nav" style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(15, 10, 30, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(139, 92, 246, 0.3);">
+    <h2 class="gradient-text logo" style="margin: 0; font-size: 1.5rem; font-weight: 900;">NEON 3D | Creator Studio</h2>
+    
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <button class="outline-btn" style="border-color: #10b981; color: #10b981;" routerLink="/order-board">🌐 Go to Order Board</button>
+      <button class="outline-btn" routerLink="/">Exit to Hub</button>
+    </div>
+  </nav>
+
+  <div class="admin-container">
+    
+    <div *ngIf="!isDataLoaded && !isLoading" class="empty-state">
+      <h1 class="page-title" style="text-align: center; margin-top: 5rem;">No Data Detected 🛰️</h1>
+      <p style="text-align: center; color: #9ca3af; margin-bottom: 2rem;">The database is currently empty. Please upload the CSV files from the Login page first.</p>
+      <div style="display: flex; justify-content: center;">
+        <button class="glow-btn" routerLink="/">Go to Login / Import</button>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" style="text-align: center; margin-top: 5rem; color: #a78bfa;">
+      <h2>Loading Creator Profile... ⏳</h2>
+    </div>
+
+    <div *ngIf="isDataLoaded && !isLoading && author">
+      
+      <div class="profile-header">
+        <div class="author-info">
+          <h1 class="page-title">Welcome back, <span class="gradient-text">{{ author.login }}</span></h1>
+          <p class="subtitle">{{ author.email }}</p>
+        </div>
+        
+        <div class="finance-card">
+          <div class="balance-info">
+            <h3>Current Balance</h3>
+            <div class="value text-green font-extrabold">${{ author.balance_usd | number:'1.2-2' }}</div>
+          </div>
+          
+          <div class="withdraw-section">
+            <input type="number" [(ngModel)]="withdrawAmount" class="neon-input small-input" placeholder="Amount to withdraw...">
+            <button class="glow-btn withdraw-btn" (click)="processWithdrawal()" [disabled]="withdrawAmount <= 0">Withdraw to Card</button>
+          </div>
+        </div>
+      </div>
+
+<hr class="neon-divider">
+
+      <div class="author-tabs">
+        <button [class.active-tab]="activeTab === 'assets'" (click)="setTab('assets')">📦 My Models</button>
+        <button [class.active-tab]="activeTab === 'sales'" (click)="setTab('sales')">💸 Sales History</button>
+        <button [class.active-tab]="activeTab === 'reviews'" (click)="setTab('reviews')">⭐ Client Reviews</button>
+        <button [class.active-tab]="activeTab === 'orders'" (click)="setTab('orders')">💼 Active Orders</button>
+      </div>
+
+<div *ngIf="activeTab === 'orders'">
+          <div class="header-actions">
+            <h2>Active Projects ({{ acceptedOrders.length }})</h2>
+            <button class="outline-btn" routerLink="/order-board">🌐 Find More Jobs</button>
+          </div>
+
+          <div class="table-container">
+            <table class="neon-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Client</th>
+                  <th>Deadline</th>
+                  <th>Budget</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of acceptedOrders">
+                  <td style="color: #a78bfa; font-weight: bold;">{{ order.order_number }}</td>
+                  <td>@{{ order.client_name }}</td>
+                  <td [style.color]="'#f59e0b'">{{ order.deadline | date:'mediumDate' }}</td>
+                  <td class="text-green">${{ order.total_price_usd }}</td>
+                  <td>
+                    <input type="file" #fileInput (change)="submitWork(order.id, fileInput.files)" style="display: none;">
+                    
+                    <button class="outline-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" (click)="fileInput.click()">
+                      📂 Submit Work
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="acceptedOrders.length === 0" style="text-align: center; padding: 3rem; color: #9ca3af;">
+              <p>You don't have any active jobs yet.</p>
+              <button class="glow-btn" routerLink="/order-board" style="margin-top: 1rem;">Browse Job Board</button>
+            </div>
+          </div>
+        </div>
+
+      <div *ngIf="activeTab === 'assets'">
+        <div class="header-actions" style="margin-top: 1.5rem;">
+          <h2>My 3D Assets ({{ assets.length }})</h2>
+          <button class="glow-btn add-btn" (click)="showUploadForm = true">➕ Upload New Model</button>
+        </div>
+        <div *ngIf="showUploadForm" style="background: rgba(15, 10, 30, 0.8); padding: 2rem; border-radius: 12px; border: 1px solid #a78bfa; margin-bottom: 2rem;">
+          <h3 style="margin-top: 0; color: #f3f4f6;">Upload New Masterpiece</h3>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div>
+              <label style="color: #9ca3af; font-size: 0.9rem;">Model Title</label>
+              <input type="text" class="neon-input" [(ngModel)]="newAsset.title" placeholder="e.g. Cyberpunk Hovercar">
+            </div>
+            <div>
+              <label style="color: #9ca3af; font-size: 0.9rem;">Price (USD)</label>
+              <input type="number" class="neon-input" [(ngModel)]="newAsset.price_usd" placeholder="0.00">
+            </div>
+            <div>
+              <label style="color: #9ca3af; font-size: 0.9rem;">Category</label>
+              <select class="neon-input" [(ngModel)]="newAsset.category_id">
+                
+                <option [ngValue]="1">Characters</option>
+                <option [ngValue]="2">Props</option>
+                <option [ngValue]="3">Environments</option>
+                <option [ngValue]="4">Weapons & Armor</option>
+                <option [ngValue]="5">Vehicles & Transport</option>
+                <option [ngValue]="6">Architecture</option>
+                <option [ngValue]="7">Animals & Creatures</option>
+                <option [ngValue]="8">Sci-Fi & Cyberpunk</option>
+                <option [ngValue]="9">Fantasy</option>
+                <option [ngValue]="10">Textures & Materials</option>
+              </select>
+            </div>
+            <div>
+              <label style="color: #9ca3af; font-size: 0.9rem;">Polygons Count</label>
+              <input type="number" class="neon-input" [(ngModel)]="newAsset.polygons_count" placeholder="e.g. 15000">
+            </div>
+            <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
+  <label class="glow-btn" style="cursor: pointer; padding: 0.6rem 1.5rem; border-radius: 8px;">
+    📂 Select 3D Model
+<input type="file" accept=".glb,.gltf,.zip,.rar,.fbx,.obj" (change)="onFileSelected($event)" style="display: none;">  </label>
+  
+  <span style="color: #a78bfa; font-weight: bold;">
+    {{ selectedFile ? selectedFile.name : 'No file chosen' }}
+  </span>
+</div>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+            <input type="checkbox" id="isRigged" [(ngModel)]="newAsset.is_rigged" style="width: 18px; height: 18px; accent-color: #8b5cf6;">
+            <label for="isRigged" style="color: #d1d5db; cursor: pointer;">This model is Rigged (Animation Ready)</label>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button class="glow-btn" (click)="uploadNewModel()">Publish Asset</button>
+            <button class="outline-btn" (click)="toggleUploadForm()">Cancel</button>
+          </div>
+        </div>
+
+        <div class="assets-grid">
+          <div class="asset-card" *ngFor="let asset of assets">
+           <div style="height: 200px; position: relative; background: linear-gradient(135deg, #1a0b2e, #090514); border-bottom: 2px solid #7b2ff7; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+
+            <model-viewer *ngIf="getPreviewType(asset.file_url) === 'model'"
+                          [src]="asset.file_url" auto-rotate camera-controls shadow-intensity="1"
+                          style="width: 100%; height: 100%; background-color: #090514;">
+            </model-viewer>
+
+            <img *ngIf="getPreviewType(asset.file_url) !== 'model' && !asset.imgError"
+                 [src]="getImageSrc(asset)"
+                 (error)="asset.imgError = true"
+                 style="width: 100%; height: 100%; object-fit: cover;">
+
+            <div *ngIf="asset.imgError" style="text-align: center; color: #7b2ff7; z-index: 5;">
+              <div style="font-size: 3rem; margin-bottom: 0.5rem; text-shadow: 0 0 15px #7b2ff7;">👾</div>
+              <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Cyber Asset</div>
+            </div>
+
+            <div *ngIf="getPreviewType(asset.file_url) !== 'model' && !asset.imgError" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));"></div>
+
+            <span *ngIf="asset.is_rigged" style="position: absolute; top: 10px; right: 10px; background: #10b981; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4); z-index: 10;">
+              🦴 Rigged
+            </span>
+          </div>
+            <div class="asset-details">
+              <h3>{{ asset.title }}</h3>
+              <div class="asset-meta">
+                <span>💎 {{ asset.polygons_count }} Polygons</span>
+                <span class="text-green font-bold">${{ asset.price_usd }}</span>
+              </div>
+              <div class="card-actions">
+                <button class="action-btn edit-btn" (click)="editPrice(asset)">✏️ Edit Price</button>
+                <button class="action-btn ban-btn" (click)="deleteAsset(asset.id, asset.title)">🗑️ Delete</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="assets.length === 0" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #9ca3af;">
+            You haven't uploaded any models yet.
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'sales'" class="table-container" style="margin-top: 1.5rem;">
+        <table class="neon-table">
+          <thead>
+            <tr><th>Tx ID</th><th>Date</th><th>Model Sold</th><th>Buyer</th><th>Revenue</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sale of sales">
+              <td>#{{ sale.id }}</td>
+              <td style="color: #9ca3af;">{{ sale.date }}</td>
+              <td class="font-bold">{{ sale.asset }}</td>
+              <td>{{ sale.buyer }}</td>
+              <td class="text-green font-bold">+${{ sale.amount | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="sales.length === 0">
+              <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">No sales yet. Keep creating!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="activeTab === 'reviews'" class="table-container" style="margin-top: 1.5rem;">
+        <table class="neon-table">
+          <thead>
+            <tr><th>Review ID</th><th>Model</th><th>Client</th><th>Rating</th><th>Comment</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let review of reviews">
+              <td>#{{ review.id }}</td>
+              <td class="font-bold">{{ review.asset }}</td>
+              <td>{{ review.client }}</td>
+              <td class="text-green">⭐ {{ review.rating }}/5</td>
+              <td>{{ review.comment }}</td>
+            </tr>
+            <tr *ngIf="reviews.length === 0">
+              <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">No reviews yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

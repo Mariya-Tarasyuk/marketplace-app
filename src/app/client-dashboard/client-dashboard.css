@@ -1,0 +1,312 @@
+/* --- Глибокий Неоновий Фон (Як в Адмінці) --- */
+.dark-universe {
+  background: linear-gradient(135deg, #090514 0%, #160a2c 50%, #090514 100%);
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 2rem;
+}
+
+/* --- Навігація --- */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(30, 20, 50, 0.4);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo { font-size: 1.5rem; font-weight: 800; margin: 0; }
+
+.gradient-text {
+  background: linear-gradient(90deg, #b04bfb, #7b2ff7, #f107a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.outline-btn {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #7b2ff7;
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.outline-btn:hover { 
+  background: rgba(123, 47, 247, 0.1); 
+  box-shadow: 0 0 10px rgba(123, 47, 247, 0.3); 
+}
+
+/* --- Контейнер --- */
+.admin-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* --- Профіль Автора та Баланс --- */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(30, 20, 50, 0.4);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(16px);
+}
+
+.page-title { font-size: 2.2rem; margin: 0 0 0.5rem 0; font-weight: bold;}
+.subtitle { color: #9ca3af; margin: 0; }
+
+.finance-card {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  background: rgba(15, 10, 30, 0.6);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  border-left: 4px solid #10b981; 
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.balance-info h3 { margin: 0 0 0.5rem 0; color: #9ca3af; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+.value { font-size: 2.8rem; font-weight: 800; line-height: 1; }
+.text-green { color: #10b981; text-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+
+/* --- Інпути та Кнопки --- */
+.withdraw-section { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.neon-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(9, 5, 20, 0.6);
+  border: 1px solid rgba(123, 47, 247, 0.3);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s;
+}
+.neon-input:focus { border-color: #f107a3; box-shadow: 0 0 10px rgba(241, 7, 163, 0.2); }
+
+.glow-btn {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.glow-btn:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(241, 7, 163, 0.4); }
+.glow-btn[disabled] { opacity: 0.5; cursor: not-allowed; background: #4b5563; }
+
+.withdraw-btn { background: #10b981; background-image: none; padding: 0.7rem 1.5rem; font-size: 0.9rem; border-radius: 8px;}
+.withdraw-btn:hover:not([disabled]) { background: #059669; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); }
+
+/* --- Роздільник --- */
+.neon-divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(123, 47, 247, 0.5), rgba(241, 7, 163, 0.5), transparent);
+  margin: 3rem 0;
+}
+
+/* ========================================= */
+/* --- СИСТЕМА ВКЛАДОК (TABS) - ВИПРАВЛЕНО --- */
+/* ========================================= */
+.author-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0;
+}
+
+.author-tabs button {
+  background: transparent;
+  color: #9ca3af;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+  border-radius: 8px 8px 0 0;
+}
+
+.author-tabs button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.author-tabs button.active-tab {
+  color: #f107a3;
+  border-bottom: 2px solid #f107a3;
+  background: rgba(241, 7, 163, 0.1);
+  text-shadow: 0 0 10px rgba(241, 7, 163, 0.3);
+}
+
+/* ========================================= */
+/* --- НЕОНОВІ ТАБЛИЦІ - ВИПРАВЛЕНО --- */
+/* ========================================= */
+.table-container {
+  background: rgba(30, 20, 50, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  overflow-x: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.neon-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.neon-table th {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.neon-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: #d1d5db;
+}
+
+.neon-table tr:hover td { 
+  background: rgba(255,255,255,0.02); 
+}
+
+/* --- Галерея 3D Моделей --- */
+.header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.header-actions h2 { margin: 0; font-size: 1.8rem; }
+.add-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
+
+.assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.asset-card {
+  background: rgba(30, 20, 50, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-card:hover {
+  border-color: rgba(241, 7, 163, 0.5);
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(123, 47, 247, 0.2);
+}
+
+.asset-image-placeholder {
+  height: 180px;
+  background: linear-gradient(135deg, #160a2c 0%, #090514 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.asset-details { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+.asset-details h3 { margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: bold; color: #ffffff;}
+.asset-meta { display: flex; justify-content: space-between; margin-bottom: 1.5rem; color: #9ca3af; font-size: 0.9rem; }
+
+/* Кнопки Edit/Delete */
+.card-actions { display: flex; gap: 0.8rem; margin-top: auto; }
+.action-btn { flex: 1; background: transparent; padding: 0.6rem 0; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: bold; }
+.edit-btn { color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.5); }
+.edit-btn:hover { background: rgba(59, 130, 246, 0.15); border-color: #3b82f6; }
+.ban-btn { color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
+.ban-btn:hover { background: rgba(239, 68, 68, 0.15); border-color: #ef4444; }
+
+/* Стан порожньої бази */
+.empty-state {
+  background: rgba(30, 20, 50, 0.4);
+  padding: 4rem 2rem;
+  border-radius: 16px;
+  border: 1px dashed rgba(123, 47, 247, 0.5);
+  backdrop-filter: blur(16px);
+  margin-top: 2rem;
+}
+/* ========================================= */
+/* --- АДАПТИВНІСТЬ (МЕДІА-ЗАПИТИ) --- */
+/* ========================================= */
+@media (max-width: 992px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+  .finance-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+  .top-nav {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  .top-nav div {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .author-tabs {
+    flex-direction: column;
+    border-bottom: none;
+  }
+  .author-tabs button {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .author-tabs button.active-tab {
+    border-bottom: 1px solid #f107a3;
+  }
+  .admin-container {
+    padding: 1rem;
+  }
+  .value {
+    font-size: 2rem;
+  }
+  .header-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}

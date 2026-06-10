@@ -1,0 +1,73 @@
+<div class="dark-universe">
+  <nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 2rem;">
+      <h2 class="gradient-text logo">NEON 3D</h2>
+      <a routerLink="/marketplace" style="color: #9ca3af; text-decoration: none; font-weight: bold; transition: color 0.3s;">Marketplace</a>
+      <a routerLink="/artists" style="color: white; text-decoration: none; font-weight: bold;">Artists</a>
+    </div>
+    <button class="outline-btn" routerLink="/">Exit</button>
+  </nav>
+
+  <div style="padding: 4rem 2rem; max-width: 1200px; margin: 0 auto;">
+    <h1 class="gradient-text" style="font-size: 3.5rem; margin-bottom: 0.5rem; text-align: center;">Meet Our Creators</h1>
+    <p style="color: #9ca3af; text-align: center; margin-bottom: 4rem; font-size: 1.1rem;">The brilliant minds behind the best 3D assets on the platform.</p>
+    
+    <div *ngIf="isLoading" style="text-align: center; color: #a78bfa; font-size: 1.2rem;">Scanning database... ⏳</div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+      
+      <div *ngFor="let artist of artists" class="artist-card">
+        
+        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #7b2ff7, #f107a3); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; color: white; box-shadow: 0 10px 20px rgba(123, 47, 247, 0.3);">
+          {{ artist.name.substring(0, 2).toUpperCase() }}
+        </div>
+        
+        <h2 style="margin: 0 0 0.5rem 0; color: white; font-size: 1.5rem;">@{{ artist.name }}</h2>
+        
+        <div style="display: flex; gap: 0.8rem; justify-content: center; margin-top: 0.8rem;">
+  <div style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: bold; font-size: 0.85rem;">
+    📦 {{ artist.models_count }} Models
+  </div>
+  
+  <div style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 0.4rem 0.8rem; border-radius: 20px; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem;">
+    ⭐ <span *ngIf="artist.average_rating > 0">{{ artist.average_rating }} / 5.0</span>
+    <span *ngIf="artist.average_rating == 0">New</span>
+  </div>
+</div>
+        
+        <button class="outline-btn" style="width: 100%; margin-top: 2rem;" (click)="openPortfolio(artist)">View Portfolio</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isModalOpen" class="modal-overlay" (click)="closePortfolio()">
+    
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(139, 92, 246, 0.3); padding-bottom: 1rem;">
+        <h2 class="gradient-text" style="margin: 0; font-size: 2rem;">@{{ selectedArtist?.name }}'s Portfolio</h2>
+        <button class="outline-btn" style="border: none; font-size: 1.5rem; padding: 0.5rem;" (click)="closePortfolio()">❌</button>
+      </div>
+
+      <div *ngIf="isLoadingModels" style="text-align: center; color: #a78bfa; padding: 3rem; font-size: 1.2rem;">
+        Loading masterpieces... ⏳
+      </div>
+
+      <div *ngIf="!isLoadingModels && artistModels.length === 0" style="text-align: center; color: #9ca3af; padding: 3rem;">
+        This artist hasn't published any models yet. Check back later!
+      </div>
+
+      <div *ngIf="!isLoadingModels && artistModels.length > 0" class="portfolio-grid">
+        <div *ngFor="let model of artistModels" class="portfolio-item">
+          <div class="model-preview">🧊</div>
+          <h4 style="margin: 0 0 0.5rem 0; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            {{ model.title }}
+          </h4>
+          <div style="font-weight: 900; color: #10b981; font-size: 1.2rem;">${{ model.price_usd }}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>

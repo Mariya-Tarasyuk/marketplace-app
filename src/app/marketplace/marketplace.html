@@ -1,0 +1,150 @@
+<div class="dark-universe">
+  <nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 2rem;">
+      <h2 class="gradient-text logo">NEON 3D</h2>
+      
+      <a *ngIf="!isGuest" routerLink="/client-dashboard" style="color: #9ca3af; text-decoration: none; cursor: pointer;">Client Dashboard</a>
+      
+      <a routerLink="/marketplace" style="color: white; text-decoration: none; font-weight: bold;">Marketplace</a>
+      <a routerLink="/artists" style="color: #9ca3af; text-decoration: none;">Artists</a>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <input type="text" placeholder="Search dope art and 3D models..." class="neon-input" style="width: 300px;" [(ngModel)]="searchTerm" (input)="applyFilters()">
+      
+      <button *ngIf="!isGuest" class="glow-btn" style="padding: 0.5rem 1rem;" routerLink="/custom-order">✨ Custom Order</button>
+
+      <div *ngIf="isGuest" style="margin-left: 1rem;">
+        <button class="outline-btn" routerLink="/">Log In</button>
+      </div>
+      
+      <div *ngIf="!isGuest && currentUser" style="display: flex; align-items: center; gap: 0.8rem; background: rgba(30, 20, 50, 0.6); padding: 0.3rem 1rem; border-radius: 20px; border: 1px solid rgba(139, 92, 246, 0.3);">
+        <div style="width: 30px; height: 30px; border-radius: 50%; background: #8b5cf6; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white;">
+          {{ currentUser.login.substring(0, 2).toUpperCase() }}
+        </div>
+        <span class="text-green font-bold">${{ currentUser.balance_usd | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="marketplace-container" style="display: flex; max-width: 1600px; margin: 2rem auto; gap: 2rem; padding: 0 2rem;">
+    
+    <aside style="width: 250px; flex-shrink: 0;">
+      <div class="filter-panel" style="background: rgba(30, 20, 50, 0.4); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+       <div style="margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Categories</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            
+            <button class="category-btn" [class.active]="selectedCategory === 'All Artworks'" (click)="setCategory('All Artworks')">All Artworks</button>
+            <button class="category-btn" [class.active]="selectedCategory === 'Characters'" (click)="setCategory('Characters')">Characters</button>
+            <button class="category-btn" [class.active]="selectedCategory === 'Environments'" (click)="setCategory('Environments')">Environments</button>
+            <button class="category-btn" [class.active]="selectedCategory === 'Props'" (click)="setCategory('Props')">Props</button>
+            <button class="category-btn" [class.active]="selectedCategory === 'Architecture'" (click)="setCategory('Architecture')">Architecture</button>
+            <button class="category-btn" [class.active]="selectedCategory === 'Vehicles'" (click)="setCategory('Vehicles')">Vehicles</button>
+            <button class="category-btn" [class.active]="selectedCategory === 'Sci-Fi'" (click)="setCategory('Sci-Fi')">Sci-Fi & Cyberpunk</button>
+            
+          </div>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Price Range</h3>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <input type="number" placeholder="Min" class="neon-input small-input" [(ngModel)]="minPrice">
+          <span>-</span>
+          <input type="number" placeholder="Max" class="neon-input small-input" [(ngModel)]="maxPrice">
+        </div>
+        <h3 style="margin-top: 2rem;">Technical Specs</h3>
+        
+        <div style="margin-bottom: 1rem;">
+          <label style="color: #9ca3af; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Max Polygons</label>
+          <input type="number" placeholder="e.g. 50000" class="neon-input small-input" style="width: 100%;" [(ngModel)]="maxPolygons">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+          <input type="checkbox" id="rigged" [(ngModel)]="riggedOnly" style="width: 18px; height: 18px; accent-color: #8b5cf6;">
+          <label for="rigged" style="color: #d1d5db; cursor: pointer;">Rigged Models Only</label>
+        </div>
+
+        <button class="outline-btn" style="width: 100%;" (click)="applyFilters()">Apply Filters</button>
+      </div>
+    </aside>
+
+    <main style="flex-grow: 1;">
+      <div style="text-align: center; margin-bottom: 4rem;">
+        <h1 style="font-size: 3rem; margin-bottom: 0.5rem;" class="gradient-text">Discover, Collect and Sell Dope 3D Assets</h1>
+        <p style="color: #9ca3af;">The world's largest digital marketplace for 3D creators.</p>
+      </div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="margin: 0;">Trending This Week <span style="color: #9ca3af; font-size: 1rem;">({{ filteredAssets.length }} results)</span></h2>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="color: #9ca3af; font-weight: bold;">Sort By:</span>
+          <select class="neon-input" [(ngModel)]="sortOption" (change)="applyFilters()" style="width: 220px; cursor: pointer; padding: 0.6rem 1rem; background: rgba(30, 20, 50, 0.8);">
+            <option value="newest">✨ Newest Arrivals</option>
+            <option value="ratingDesc">⭐ Highest Rated</option>
+            <option value="priceAsc">💵 Price: Low to High</option>
+            <option value="priceDesc">💎 Price: High to Low</option>
+            <option value="nameAsc">🔤 Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+      
+      <div *ngIf="isLoading" style="text-align: center; padding: 3rem; color: #a78bfa;">Fetching assets... ⏳</div>
+      <div *ngIf="!isLoading && filteredAssets.length === 0" style="text-align: center; padding: 3rem; color: #9ca3af; border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px;">
+        No models found matching your filters.
+      </div>
+
+      <div class="assets-grid" *ngIf="!isLoading && filteredAssets.length > 0" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+        
+        <div class="asset-card" *ngFor="let asset of filteredAssets" style="background: rgba(30, 20, 50, 0.4); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
+          <div style="height: 200px; position: relative; background: linear-gradient(135deg, #1a0b2e, #090514); border-bottom: 2px solid #7b2ff7; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+
+            <model-viewer *ngIf="getPreviewType(asset.file_url) === 'model'"
+                          [src]="asset.file_url" auto-rotate camera-controls shadow-intensity="1"
+                          style="width: 100%; height: 100%; background-color: #090514;">
+            </model-viewer>
+
+            <img *ngIf="getPreviewType(asset.file_url) !== 'model' && !asset.imgError"
+                 [src]="getImageSrc(asset)"
+                 (error)="asset.imgError = true"
+                 style="width: 100%; height: 100%; object-fit: cover;">
+
+            <div *ngIf="asset.imgError" style="text-align: center; color: #7b2ff7; z-index: 5;">
+              <div style="font-size: 3rem; margin-bottom: 0.5rem; text-shadow: 0 0 15px #7b2ff7;">👾</div>
+              <div style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Cyber Asset</div>
+            </div>
+
+            <div *ngIf="getPreviewType(asset.file_url) !== 'model' && !asset.imgError" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8));"></div>
+
+            <span *ngIf="asset.is_rigged" style="position: absolute; top: 10px; right: 10px; background: #10b981; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4); z-index: 10;">
+              🦴 Rigged
+            </span>
+          </div>
+          
+          <div style="padding: 1rem;">
+            <h3 style="margin: 0 0 0.2rem 0;">{{ asset.title }}</h3>
+            <p style="margin: 0 0 1rem 0; color: #9ca3af; font-size: 0.9rem;">by <span style="color: #a78bfa;">@{{ asset.author_name }}</span></p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.85rem; color: #d1d5db; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px;">
+              <span>💎 {{ asset.polygons_count | number }} polys</span>
+            <div style="color: #f59e0b; font-size: 0.9rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.3rem;">
+  ⭐ 
+  <span *ngIf="asset.average_rating">{{ asset.average_rating }}</span>
+  <span *ngIf="!asset.average_rating" style="color: #9ca3af; font-size: 0.8rem;">No reviews yet</span>
+</div>  
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <div style="font-size: 0.8rem; color: #9ca3af;">Current price</div>
+                <div style="font-size: 1.5rem; font-weight: bold;">${{ asset.price_usd }}</div>
+              </div>
+              <button class="glow-btn" style="padding: 0.4rem 1.5rem; border-radius: 8px;" (click)="buyModel(asset)">Buy</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>

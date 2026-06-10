@@ -1,0 +1,52 @@
+<div class="dark-universe">
+  <nav class="top-nav">
+    <h2 class="gradient-text logo">NEON 3D | Job Board</h2>
+    <button class="outline-btn" routerLink="/author-dashboard">⬅ Back to Studio</button>
+  </nav>
+
+  <div class="admin-container" style="padding: 3rem 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;">
+      <div>
+        <h1 class="gradient-text" style="font-size: 2.5rem; margin-bottom: 0.5rem; margin-top: 0;">Available Freelance Orders 🛠️</h1>
+        <p style="color: #9ca3af; margin: 0;">Accept custom requests from clients and earn more.</p>
+      </div>
+      
+      <button class="outline-btn" style="border-color: #8b5cf6; color: #a78bfa; display: flex; align-items: center; gap: 0.5rem;" (click)="loadOrders()">
+        <span>🔄</span> Refresh List
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" style="text-align: center; color: #a78bfa; font-size: 1.2rem; margin-top: 3rem;">
+      Scanning for new jobs... ⏳
+    </div>
+
+    <div *ngIf="!isLoading && availableOrders.length === 0" class="empty-state">
+      <h3 style="color: #f3f4f6; margin-top: 0;">No open orders right now.</h3>
+      <p>Check back later when clients post new requests!</p>
+    </div>
+
+    <div class="orders-list" style="display: grid; gap: 1.5rem;">
+      <div *ngFor="let order of availableOrders" class="order-card">
+        
+        <div style="flex: 1; padding-right: 2rem;">
+          <h3 class="gradient-text" style="margin-top: 0; font-size: 1.4rem;">{{ order.order_number }}</h3>
+          <p style="color: #d1d5db; line-height: 1.6; white-space: pre-wrap; margin-bottom: 1.5rem;">{{ order.client_notes }}</p>
+          
+          <div style="font-size: 0.9rem; color: #9ca3af; display: flex; gap: 1.5rem; background: rgba(0,0,0,0.2); padding: 0.8rem; border-radius: 8px; width: fit-content;">
+            <span>👤 Client: <b style="color: white;">@{{ order.client_name }}</b></span>
+            <span>⏰ Deadline: <b style="color: #f59e0b;">{{ order.deadline | date:'mediumDate' }}</b></span>
+          </div>
+        </div>
+
+        <div style="text-align: right; min-width: 180px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 2rem;">
+          <div style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 0.2rem;">Budget</div>
+          <div class="text-green" style="font-size: 2.2rem; font-weight: 900; margin-bottom: 1.5rem;">
+            ${{ order.total_price_usd }}
+          </div>
+            <button class="glow-btn" style="width: 100%;" (click)="acceptOrder(order.id)">Accept Order</button>        
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

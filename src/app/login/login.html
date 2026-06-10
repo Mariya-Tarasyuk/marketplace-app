@@ -1,0 +1,69 @@
+<div class="dark-universe">
+  <div class="login-card">
+    
+    <div class="header-section text-center">
+      <h1 class="page-title gradient-text" style="font-size: 3rem;">System Access</h1>
+      <p class="subtitle">Select your authorization role to enter the platform</p>
+    </div>
+
+    <div class="split-layout">
+      <div class="logo-section">
+        <h1 class="huge-logo gradient-text" (dblclick)="secretAdminAccess()" title="Double-click for secret access!">NEON 3D</h1>
+      </div>
+
+      <div class="form-section">
+        
+        <div *ngIf="!isRegisterMode" class="form-container">
+          <input type="email" class="neon-input" placeholder="Email Address" [(ngModel)]="loginEmail">
+          <input type="password" class="neon-input" placeholder="Password" [(ngModel)]="loginPassword">
+          
+          <button class="glow-btn" (click)="loginUser()">🔑 Log In</button>
+          
+          <div style="text-align: center; margin: 1rem 0; color: #6b7280; font-size: 0.9rem;">- OR -</div>
+          
+          <button class="outline-btn" style="border-color: #6b7280; color: #9ca3af;" (click)="loginAsGuest()">👻 Continue as Guest</button>
+          
+          <p class="toggle-text">
+            Don't have an account? <span class="link-text" (click)="toggleMode()">Sign Up</span>
+          </p>
+        </div>
+
+       <div *ngIf="isRegisterMode" class="form-container">
+          <h3 style="margin-top: 0; color: #f3f4f6; text-align: center;">Create Account</h3>
+          <input type="text" class="neon-input" placeholder="Username" [(ngModel)]="regLogin">
+          <input type="email" class="neon-input" placeholder="Email Address" [(ngModel)]="regEmail">
+          
+          <input type="password" class="neon-input" placeholder="Password" [(ngModel)]="regPassword">
+          
+          <select class="neon-input" [(ngModel)]="regRole">
+            <option [ngValue]="3">I want to buy models (Client)</option>
+            <option [ngValue]="2">I want to sell models (Author)</option>
+          </select>
+
+          <button class="glow-btn" style="margin-top: 0.5rem;" (click)="registerNewUser()">Register</button>
+          <p class="toggle-text">
+            Already have an account? <span class="link-text" (click)="toggleMode()">Log In</span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="neon-divider">
+
+    <div class="sync-section text-center">
+      <h3>⚙️ System Initialization (Database Sync)</h3>
+      <p class="subtitle" style="margin-bottom: 1.5rem;">Upload external dataset (CSV) to populate system tables (Users, Assets, Reviews).</p>
+      
+      <div class="upload-controls">
+        <input type="file" #fileInput multiple accept=".csv" (change)="onFileSelected($event)" style="display: none;">
+        <button class="outline-btn" style="border-color: #8b5cf6; color: #a78bfa;" (click)="fileInput.click()">{{ selectedFilesText }}</button>
+        <button class="glow-btn" [disabled]="selectedFiles.length === 0 || isUploading" (click)="uploadData()">
+          {{ isUploading ? 'Uploading...' : 'Import Data' }}
+        </button>
+      </div>
+      <p *ngIf="uploadProgress" class="progress-text">{{ uploadProgress }}</p>
+    </div>
+
+  </div>
+</div>

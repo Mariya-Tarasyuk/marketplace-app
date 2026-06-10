@@ -1,0 +1,81 @@
+.dark-universe {
+  background: linear-gradient(135deg, #090514 0%, #160a2c 50%, #090514 100%);
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  background: rgba(15, 10, 30, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.logo { margin: 0; font-size: 1.5rem; font-weight: 900; }
+
+.gradient-text {
+  background: linear-gradient(90deg, #b04bfb, #7b2ff7, #f107a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.order-card {
+  background: rgba(30, 20, 50, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(123, 47, 247, 0.25);
+  border-color: #f107a3;
+}
+
+.text-green { color: #10b981; }
+
+.glow-btn {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.glow-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(241, 7, 163, 0.4); }
+
+.outline-btn {
+  background: transparent;
+  border: 1px solid #7b2ff7;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.outline-btn:hover { background: rgba(255, 255, 255, 0.05); }
+
+.empty-state {
+  text-align: center;
+  color: #9ca3af;
+  padding: 4rem;
+  background: rgba(30, 20, 50, 0.3);
+  border-radius: 12px;
+  border: 2px dashed rgba(139, 92, 246, 0.3);
+}

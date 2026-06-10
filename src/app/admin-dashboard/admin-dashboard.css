@@ -1,0 +1,309 @@
+.dark-universe {
+  background: linear-gradient(135deg, #090514 0%, #160a2c 50%, #090514 100%);
+  min-height: 100vh;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 2rem;
+}
+
+/* Навігація */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(30, 20, 50, 0.4);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo { font-size: 1.5rem; font-weight: 800; margin: 0; }
+.gradient-text {
+  background: linear-gradient(90deg, #b04bfb, #7b2ff7, #f107a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.outline-btn {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #7b2ff7;
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.outline-btn:hover { background: rgba(123, 47, 247, 0.1); box-shadow: 0 0 10px rgba(123, 47, 247, 0.3); }
+
+/* Контейнер */
+.admin-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.page-title { font-size: 2.2rem; margin: 0 0 0.5rem 0; }
+.subtitle { color: #9ca3af; margin: 0; }
+
+/* Картки статистики (Виправлено!) */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: rgba(30, 20, 50, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+}
+
+.stat-card:hover { transform: translateY(-3px); }
+.stat-card h3 { margin: 0 0 0.5rem 0; color: #9ca3af; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+.stat-card .value { font-size: 2.5rem; font-weight: bold; }
+.text-green { color: #10b981; }
+.highlight { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.1); }
+
+/* Таблиця */
+.table-container {
+  background: rgba(30, 20, 50, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.table-container h3 { margin-top: 0; color: #e5e7eb; margin-bottom: 1.5rem; }
+
+.neon-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.neon-table th {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.neon-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: #d1d5db;
+}
+
+.neon-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.font-bold { font-weight: bold; color: #fff; }
+
+/* Бейджі ролей */
+.role-badge {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.author-role { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+
+/* Кнопки дій в таблиці */
+.action-btn {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.action-btn:hover { background: rgba(239, 68, 68, 0.1); }
+
+.glow-btn {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%; /* Додали чітку ширину */
+  box-sizing: border-box; /* Захист від вилізання */
+}
+
+.search-box {
+  flex-grow: 1;
+  max-width: 400px;
+  min-width: 250px; /* Додали мінімальну ширину для мобільних екранів */
+}
+
+.neon-input {
+  width: 100%;
+  box-sizing: border-box; /* ОСЬ ГОЛОВНИЙ ФІКС: тепер рамка не буде вилізати! */
+  background: rgba(15, 10, 30, 0.6);
+  border: 1px solid rgba(123, 47, 247, 0.3);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.neon-input:focus {
+  border-color: #f107a3;
+  box-shadow: 0 0 10px rgba(241, 7, 163, 0.2);
+}
+
+/* Скрол для таблиці */
+.scrollable-table {
+  max-height: 500px; /* Висота таблиці на екрані */
+  overflow-y: auto;  /* Вмикає вертикальну прокрутку */
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Фіксована шапка при прокрутці */
+.neon-table th {
+  position: sticky;
+  top: 0;
+  background: #120824; /* Темний фон шапки */
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Нові кнопки дій */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background: transparent;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.edit-btn {
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+}
+
+.edit-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.ban-btn {
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.ban-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+/* Робимо картки кнопками-вкладками */
+.stat-card {
+  cursor: pointer;
+}
+
+.active-tab {
+  border-color: #f107a3;
+  box-shadow: 0 0 20px rgba(241, 7, 163, 0.2);
+  transform: translateY(-5px);
+  background: rgba(45, 25, 75, 0.6);
+}
+
+/* КАСТОМНИЙ НЕОНОВИЙ СКРОЛБАР */
+.scrollable-table::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollable-table::-webkit-scrollbar-track {
+  background: rgba(15, 10, 30, 0.6);
+  border-radius: 8px;
+}
+
+.scrollable-table::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7b2ff7, #f107a3);
+  border-radius: 8px;
+  border: 2px solid rgba(15, 10, 30, 0.6);
+}
+
+.scrollable-table::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #b04bfb, #f107a3);
+}
+
+.small-input {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  width: 90%;
+}
+.text-green { color: #10b981; }
+
+/* ========================================= */
+/* --- АДАПТИВНІСТЬ (МЕДІА-ЗАПИТИ) --- */
+/* ========================================= */
+@media (max-width: 992px) {
+  .header-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+  .header-section div[style*="display: flex"] {
+    flex-direction: column;
+  }
+  .glow-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .top-nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-container {
+    padding: 1rem;
+  }
+  .page-title {
+    font-size: 1.8rem;
+  }
+  .table-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

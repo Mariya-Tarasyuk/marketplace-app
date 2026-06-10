@@ -1,0 +1,161 @@
+/* --- Основний Фон --- */
+.dark-universe {
+  background: linear-gradient(135deg, #090514 0%, #160a2c 50%, #090514 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+}
+
+/* --- Головна Картка --- */
+.login-card {
+  background: rgba(30, 20, 50, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.text-center { text-align: center; }
+.page-title { margin: 0 0 0.5rem 0; font-weight: bold; }
+.subtitle { color: #9ca3af; margin: 0; font-size: 0.95rem; }
+
+.gradient-text {
+  background: linear-gradient(90deg, #b04bfb, #7b2ff7, #f107a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --- Розділення на 2 колонки --- */
+.split-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3rem 0;
+  gap: 3rem;
+}
+
+.logo-section { flex: 1; text-align: center; }
+.huge-logo {
+  font-size: 4.5rem;
+  font-weight: 900;
+  cursor: crosshair; /* Курсор-приціл для підказки про пасхалку */
+  user-select: none;
+  margin: 0;
+  text-shadow: 0 0 30px rgba(123, 47, 247, 0.4);
+  transition: transform 0.3s;
+}
+.huge-logo:hover { transform: scale(1.05); }
+
+.form-section {
+  flex: 1;
+  background: rgba(15, 10, 30, 0.5);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* --- Кнопки --- */
+.glow-btn {
+  background: linear-gradient(90deg, #7b2ff7, #f107a3);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 1rem;
+}
+.glow-btn:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(241, 7, 163, 0.4); }
+.glow-btn[disabled] { opacity: 0.5; cursor: not-allowed; filter: grayscale(100%); }
+
+.outline-btn {
+  background: transparent;
+  border: 1px solid #7b2ff7;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+.outline-btn:hover { background: rgba(255, 255, 255, 0.05); }
+
+/* --- Інпути --- */
+.neon-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(9, 5, 20, 0.6);
+  border: 1px solid rgba(123, 47, 247, 0.3);
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+.neon-input:focus { border-color: #f107a3; box-shadow: 0 0 10px rgba(241, 7, 163, 0.2); }
+
+select.neon-input option { background: #160a2c; color: white; }
+
+/* --- Тексти-перемикачі --- */
+.toggle-text { text-align: center; margin-top: 1rem; color: #9ca3af; font-size: 0.9rem; }
+.link-text { color: #a78bfa; cursor: pointer; text-decoration: underline; font-weight: bold; transition: color 0.2s;}
+.link-text:hover { color: #f107a3; }
+
+.neon-divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(123, 47, 247, 0.5), transparent); margin: 2rem 0; }
+
+/* --- Нижня частина (CSV) --- */
+.upload-controls { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.progress-text { color: #10b981; margin-top: 1rem; font-weight: bold; animation: pulse 1.5s infinite; }
+
+@keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+
+/* ========================================= */
+/* --- АДАПТИВНІСТЬ (МЕДІА-ЗАПИТИ) --- */
+/* ========================================= */
+@media (max-width: 992px) {
+  .split-layout {
+    flex-direction: column;
+    gap: 2rem;
+    margin: 1.5rem 0;
+  }
+  .huge-logo {
+    font-size: 3.5rem;
+  }
+  .login-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+  .huge-logo {
+    font-size: 2.5rem;
+  }
+  .upload-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .upload-controls button {
+    width: 100%;
+  }
+}

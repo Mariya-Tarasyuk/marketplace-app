@@ -1,0 +1,51 @@
+<div class="custom-order-page" style="min-height: 100vh; padding-top: 2rem;">
+  <div class="glass-container" style="max-width: 700px; margin: 0 auto; background: rgba(30, 20, 50, 0.6); padding: 3rem; border-radius: 20px; border: 1px solid rgba(139, 92, 246, 0.3);">
+    
+    <div class="header-section" style="margin-bottom: 2rem; text-align: center;">
+      <h1 class="gradient-text" style="font-size: 2.5rem; margin-bottom: 0.5rem;">Create Custom Request</h1>
+      <p class="subtitle" style="color: #9ca3af;">Hire top 3D artists for your unique project.</p>
+    </div>
+
+    <form class="order-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+      
+      <div class="form-group">
+        <label style="color: #d1d5db; display: block; margin-bottom: 0.5rem;">Project Title</label>
+        <input type="text" placeholder="e.g., Cyberpunk Main Character Model" class="neon-input" [(ngModel)]="uiTitle" name="title">
+      </div>
+
+      <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="form-group">
+          <label style="color: #d1d5db; display: block; margin-bottom: 0.5rem;">Category</label>
+          <select class="neon-input" [(ngModel)]="uiCategory" name="category">
+            <option value="" disabled selected>Select a category...</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label style="color: #d1d5db; display: block; margin-bottom: 0.5rem;">Estimated Budget (USD)</label>
+          <div class="input-with-icon" style="position: relative;">
+            <span class="currency-icon" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #10b981; font-weight: bold;">$</span>
+            <input type="number" placeholder="500" class="neon-input icon-padding" style="padding-left: 2.5rem;" [(ngModel)]="order.total_price_usd" name="budget">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color: #d1d5db; display: block; margin-bottom: 0.5rem;">Expected Deadline</label>
+        <input type="date" class="neon-input" style="color-scheme: dark;" [(ngModel)]="order.deadline" name="deadline">
+      </div>
+
+      <div class="form-group">
+        <label style="color: #d1d5db; display: block; margin-bottom: 0.5rem;">Detailed Requirements (Client Notes)</label>
+        <textarea rows="5" placeholder="Describe your vision, polygon limits, required file formats (FBX, OBJ), and rigging needs..." class="neon-input" [(ngModel)]="uiNotes" name="notes"></textarea>
+      </div>
+
+      <div class="action-section" style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <button type="button" class="outline-btn" style="flex: 1;" routerLink="/marketplace">Cancel</button>
+        <button type="button" class="glow-btn" style="flex: 2;" (click)="submitOrder()">Publish Request</button>
+      </div>
+      
+    </form>
+  </div>
+</div>

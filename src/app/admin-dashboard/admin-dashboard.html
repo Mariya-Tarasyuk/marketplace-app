@@ -1,0 +1,182 @@
+<div class="dark-universe">
+  <nav class="top-nav">
+    <h2 class="gradient-text logo">NEON 3D | Admin</h2>
+    <button class="outline-btn" routerLink="/">Exit to Hub</button>
+  </nav>
+
+  <div class="admin-container">
+    <div class="header-section">
+      <div>
+        <h1 class="page-title">Database Overview</h1>
+        <p class="subtitle">System Monitor & User Management (PostgreSQL Sync Active)</p>
+      </div>
+     <div style="display: flex; gap: 1rem;">
+        <button class="glow-btn" (click)="generateMockTransactions()" [disabled]="isLoading" style="background: #8b5cf6; border-color: #a78bfa;">
+          <span>🎲 Generate Txns</span>
+        </button>
+        <button class="glow-btn" (click)="loadData()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">🔄 Refresh Data</span>
+          <span *ngIf="isLoading">⏳ Fetching...</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card" [class.active-tab]="activeTab === 'users'" (click)="setTab('users')">
+        <h3>Total Users</h3>
+        <div class="value">{{ totalUsers }}</div>
+      </div>
+      <div class="stat-card" [class.active-tab]="activeTab === 'assets'" (click)="setTab('assets')">
+        <h3>Total Assets</h3>
+        <div class="value">{{ totalAssets }}</div>
+      </div>
+      <div class="stat-card" [class.active-tab]="activeTab === 'reviews'" (click)="setTab('reviews')">
+        <h3>Total Reviews</h3>
+        <div class="value">{{ totalReviews }}</div>
+      </div>
+      <div class="stat-card" [class.active-tab]="activeTab === 'audit'" (click)="setTab('audit')">
+        <h3>System Audit Logs</h3>
+        <div class="value text-green">{{ totalAudit }}</div>
+      </div>
+      <div class="stat-card" [class.active-tab]="activeTab === 'transactions'" (click)="setTab('transactions')">
+        <h3>Financial Transactions</h3>
+        <div class="value text-green">{{ totalTransactions }}</div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header-actions">
+        <h3>
+          <span *ngIf="activeTab === 'users'">Users Table</span>
+          <span *ngIf="activeTab === 'assets'">3D Assets Directory</span>
+          <span *ngIf="activeTab === 'reviews'">Client Reviews Audit</span>
+          <span *ngIf="activeTab === 'audit'">Security & Audit Logs</span>
+          <span *ngIf="activeTab === 'transactions'">Financial Transactions History</span>
+        </h3>
+        <div class="search-box">
+          <input type="text" [(ngModel)]="searchTerm" (input)="filterData()" placeholder="🔍 Search current table..." class="neon-input">
+        </div>
+      </div>
+
+      <div class="scrollable-table">
+        <table class="neon-table">
+          
+          <thead *ngIf="activeTab === 'users'">
+            <tr>
+              <th>ID</th><th>Login</th><th>Email</th><th>Role</th><th>Balance</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="activeTab === 'users'">
+            <tr *ngFor="let user of filteredUsers">
+              <td>#{{ user.id }}</td>
+              
+              <ng-container *ngIf="editingUserId !== user.id">
+                <td class="font-bold">{{ user.login }}</td>
+                <td>{{ user.email }}</td>
+                <td><span class="role-badge" [ngClass]="{'author-role': user.role === 'Author'}">{{ user.role }}</span></td>
+                <td class="text-green">${{ user.balance | number:'1.2-2' }}</td>
+                <td class="action-buttons">
+                  <button class="action-btn edit-btn" (click)="startEdit(user)">✏️ Edit</button>
+                  <button class="action-btn ban-btn" (click)="banUser(user.id, user.login)">🚫 Ban</button>
+                </td>
+              </ng-container>
+
+              <ng-container *ngIf="editingUserId === user.id">
+                <td><input type="text" [(ngModel)]="editForm.login" class="neon-input small-input"></td>
+                <td><input type="text" [(ngModel)]="editForm.email" class="neon-input small-input"></td>
+                <td><span class="role-badge">{{ user.role }}</span> <span style="font-size: 0.8rem; color: #9ca3af;">(Locked)</span></td>
+                <td><input type="number" [(ngModel)]="editForm.balance" class="neon-input small-input"></td>
+                <td class="action-buttons">
+                  <button class="action-btn text-green" style="border-color: #10b981;" (click)="saveEdit(user.id)">✅ Save</button>
+                  <button class="action-btn ban-btn" (click)="banUser(user.id, user.login)">🚫 Ban</button>
+                </td>
+              </ng-container>
+
+            </tr>
+            <tr *ngIf="filteredUsers.length === 0">
+              <td colspan="6" style="text-align: center; padding: 2rem; color: #9ca3af;">No users found matching your search.</td>
+            </tr>
+          </tbody>
+
+          <thead *ngIf="activeTab === 'assets'">
+            <tr>
+              <th>ID</th><th>Title</th><th>Category</th><th>Author</th><th>Price</th><th>Rating</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="activeTab === 'assets'">
+            <tr *ngFor="let asset of filteredAssets">
+              <td>#{{ asset.id }}</td>
+              <td class="font-bold">{{ asset.title }}</td>
+              <td>{{ asset.category }}</td>
+              <td>{{ asset.author }}</td>
+              <td class="text-green">${{ asset.price | number:'1.2-2' }}</td>
+              <td>⭐ {{ asset.rating }}</td>
+            </tr>
+            <tr *ngIf="filteredAssets.length === 0">
+              <td colspan="6" style="text-align: center; padding: 2rem; color: #9ca3af;">No assets found matching your search.</td>
+            </tr>
+          </tbody>
+
+          <thead *ngIf="activeTab === 'reviews'">
+            <tr>
+              <th>ID</th><th>Asset Name</th><th>Client</th><th>Rating</th><th>Comment</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="activeTab === 'reviews'">
+            <tr *ngFor="let review of filteredReviews">
+              <td>#{{ review.id }}</td>
+              <td class="font-bold">{{ review.asset }}</td>
+              <td>{{ review.client }}</td>
+              <td class="text-green">⭐ {{ review.rating }}/5</td>
+              <td style="max-width: 300px;">{{ review.comment }}</td>
+            </tr>
+            <tr *ngIf="filteredReviews.length === 0">
+              <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">No reviews found matching your search.</td>
+            </tr>
+          </tbody>
+
+          <thead *ngIf="activeTab === 'audit'">
+            <tr>
+              <th>ID</th><th>Time</th><th>Action</th><th>Target</th><th>Description</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="activeTab === 'audit'">
+            <tr *ngFor="let log of filteredAudit">
+              <td>#{{ log.id }}</td>
+              <td style="color: #9ca3af;">{{ log.time }}</td>
+              <td>
+                <span class="role-badge" [ngStyle]="{'color': log.action_type === 'DELETE' ? '#ef4444' : '#f59e0b', 'background': log.action_type === 'DELETE' ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)'}">
+                  {{ log.action_type }}
+                </span>
+              </td>
+              <td class="font-bold">{{ log.table_name | uppercase }} (#{{ log.record_id }})</td>
+              <td>{{ log.description }}</td>
+            </tr>
+            <tr *ngIf="filteredAudit.length === 0">
+              <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">System logs are clean. No recent actions.</td>
+            </tr>
+          </tbody>
+          <thead *ngIf="activeTab === 'transactions'">
+            <tr>
+              <th>Tx ID</th><th>Date & Time</th><th>Buyer (Client)</th><th>Asset Purchased</th><th>Amount (USD)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="activeTab === 'transactions'">
+            <tr *ngFor="let tx of filteredTransactions">
+              <td>#{{ tx.id }}</td>
+              <td style="color: #9ca3af;">{{ tx.date }}</td>
+              <td class="font-bold">{{ tx.buyer }}</td>
+              <td>{{ tx.asset }}</td>
+              <td class="text-green font-bold">+${{ tx.amount | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="filteredTransactions.length === 0">
+              <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">No financial transactions found.</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
