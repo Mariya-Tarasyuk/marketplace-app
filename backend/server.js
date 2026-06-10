@@ -43,11 +43,6 @@ app.post('/api/upload', upload.single('modelFile'), (req, res) => {
 
 
 const pool = new Pool({
-  // user: 'postgres',
-  // host: 'localhost',
-  // database: 'marketplace_DB',
-  // password: 'Tarasyuk1', 
-  // port: 5432,
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
