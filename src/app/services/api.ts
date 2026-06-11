@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000/api';
+  private baseUrl = 'https://marketplace-app-zcks.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 

@@ -27,7 +27,9 @@ const upload = multer({ storage: storage });
 
 app.post('/api/upload', upload.single('modelFile'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  const fileUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+  const baseUrl = process.env.RENDER_EXTERNAL_URL || 'http://localhost:3000';
+  const fileUrl = `${baseUrl}/uploads/${req.file.filename}`;
+  
   res.json({ url: fileUrl });
 });
 
